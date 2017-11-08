@@ -77,7 +77,7 @@ const DEV_CONFIG = {
   }
 };
 
-// TODO: Сделать продакш-конфиг
+// TODO: Сделать production-сборку
 const PROD_CONFIG = {
 
 };
