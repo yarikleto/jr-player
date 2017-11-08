@@ -1,0 +1,7 @@
+const PREFIX = 'MUSIC/'
+
+module.exports = {
+  NEW_MUSIC: PREFIX + 'NEW_MUSIC',
+  GET_MUSIC: PREFIX + 'GET_MUSIC',
+  SEND_MUSIC: PREFIX + 'SEND_MUSIC',
+}

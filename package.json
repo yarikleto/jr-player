@@ -1,0 +1,38 @@
+{
+  "name": "jetruby-player",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "scripts": {
+    "dev": "webpack-dev-server --env development"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/react": "16.0.10",
+    "@types/react-dom": "16.0.1",
+    "@types/react-redux": "^5.0.12",
+    "@types/redux": "^3.6.0",
+    "@types/socket.io-client": "^1.4.31",
+    "react": "16.0.0",
+    "react-dom": "16.0.0",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2",
+    "socket.io-client": "^2.0.4",
+    "webpack": "3.7.1"
+  },
+  "devDependencies": {
+    "awesome-typescript-loader": "3.2.3",
+    "css-loader": "0.28.7",
+    "file-loader": "1.1.5",
+    "html-webpack-plugin": "2.30.1",
+    "image-webpack-loader": "3.4.2",
+    "node-sass": "4.5.3",
+    "sass-loader": "6.0.6",
+    "source-map-loader": "0.2.2",
+    "style-loader": "0.19.0",
+    "typescript": "2.5.3",
+    "webpack-dev-server": "2.9.1"
+  }
+}
