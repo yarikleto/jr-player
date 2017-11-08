@@ -1,7 +1,7 @@
 # JR-Player
 ![JR-PLAYER](https://image.ibb.co/m8ccfw/bg.jpg)
 
-**Stack:** Webpack, React, Typescript, SASS
+**Stack:** Webpack, React, Typescript, SASS, NodeJS
 
 - На данный момент работает только `development` сборка
 - За папкой `music` идет постоянная слежка. При добавлении новой музыки автоматически обновляется плейлист
