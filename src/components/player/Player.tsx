@@ -32,6 +32,9 @@ const DEFAULT_ACTIVE_TRACK = {
   duration: 0,
 }
 
+/**
+ * @desc Компонент кастомного плеера с плейлистом
+ */
 export class Player extends React.Component<IProps, IState> {
   audioNode: HTMLAudioElement;
   meta: IMusicMeta;
@@ -39,11 +42,11 @@ export class Player extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
     this.state = {
-      filterValue: '',
-      playbackButtonState: PLAYBACK_STATUS.play,
-      activeTrack: DEFAULT_ACTIVE_TRACK,
-      localMusic: [],
-      currentTime: 0,
+      filterValue: '', // Состояние поля фильтра
+      playbackButtonState: PLAYBACK_STATUS.play, // Состояние кнопки ПУСК/ПАУЗА
+      activeTrack: DEFAULT_ACTIVE_TRACK, // Данные об активной песне (исполнитель, название, длительность)
+      localMusic: [], // При получении музыки извне, компонент добавляет разнные данные к песням и хранит у себя в состоянии
+      currentTime: 0, // Время песни (каком месте остановился плеер)
     }
   }
 
@@ -131,12 +134,16 @@ export class Player extends React.Component<IProps, IState> {
   // LIFE CYCLE METHODS
 
   componentWillReceiveProps(newProps: any): void {
+
+    // Сохраняем различные метаданные, добавляем к полученным песням данные о их длительности
     this.meta = newProps.musicData.meta
     this.addDurationToLocalMusic(newProps.musicData.music)
     
   }
 
   componentDidUpdate() {
+
+    // Добавляем первый в списке трек в состояние воспоизведения
     this.setDefaultTrackToState()
   }
 
@@ -149,7 +156,11 @@ export class Player extends React.Component<IProps, IState> {
 
   handleClickProgressBar = ({nativeEvent, target}: any): void => {
     const { activeTrack: {duration}, playbackButtonState } = this.state
+
+    // Вычисляем, на каком расстоянии нажал пользователь и меняем время песни
     this.audioNode.currentTime = nativeEvent.offsetX / target.parentElement.clientWidth * duration
+
+    // Если плеер на паузе, то перевести в состояние воспроизведения
     if (playbackButtonState === PLAYBACK_STATUS.play) this.play()
   }
 
@@ -198,6 +209,12 @@ export class Player extends React.Component<IProps, IState> {
   // RENDER METHODS
 
   //TODO: Перевести обработчик клика на список
+
+  /**
+   * @desc Создает jsx-элемент песни в плейлисте
+   * @param {INewTrack} songData Данные о песне
+   * @return {JSX.Element}
+   */
   renderTrackItem = (songData: INewTrack): JSX.Element => {
     const { activeTrack } = this.state
     const itemClass: string = `player__item ${activeTrack.fullname === songData.fullname ? 'player__item--active': ''}`
@@ -234,6 +251,12 @@ export class Player extends React.Component<IProps, IState> {
 
   // CUSTOM METHODS
 
+  /**
+   * @desc Вычесляем ширину полосы воспроизведения песни
+   * @param {number} currentTime Текущее время песни в секундах 
+   * @param {duration} currentTime Общее время песни в секундах
+   * @return {Object}
+   */
   getProgressStyle = (currentTime: number, duration: number) => {
     return {
       width: currentTime / duration * 100 + '%',
@@ -241,9 +264,17 @@ export class Player extends React.Component<IProps, IState> {
   }
 
   //TODO: Сделать более декларативным
+
+  /**
+   * @desc В зависимости от выбранной стороны, воспроизвести песню слева или справа
+   * @param {string} side С какой стороны воспроизвести песню
+   */
   putTrackBySide = (side: string) => {
     const { activeTrack, localMusic } = this.state
+  
+    // Узнаем под каким индеком в массиве всех песен находится активная
     const indexActiveSong: number = localMusic.findIndex(songData => songData.fullname === activeTrack.fullname)
+
     if (indexActiveSong < 0 || localMusic.length === 0) {
       console.error('Не найдена песня или их негде искать')
       return false
@@ -263,6 +294,9 @@ export class Player extends React.Component<IProps, IState> {
     }, this.play)
   }
 
+  /**
+   * @desc Сохраняет ссылку на dom-узел тега <audio/> и подписывается на события
+   */
   saveAudioRefAndAddListeners = (ref: any) => {
     this.audioNode = ref;
     this.addListeners()
@@ -270,10 +304,18 @@ export class Player extends React.Component<IProps, IState> {
 
   addListeners = () => {
     if (!this.audioNode) return
+
+    // Когда песня закончилась
     this.audioNode.onended = this.handleEndedAudio
+
+    // Кодга время песни изменилось
     this.audioNode.ontimeupdate = this.handleTimeUpdate
   }
 
+  /**
+   * @desc В зависимости от состояния, делать кнопку воспроизведения либо "ПАУЗА", либо "ПУСК".
+   * В соответствии с этим запускать песню или ставить на паузу
+   */
   togglePlaybackButton = () => {
     switch(this.state.playbackButtonState) {
       case PLAYBACK_STATUS.play:
@@ -314,16 +356,26 @@ export class Player extends React.Component<IProps, IState> {
     })
   }
 
+  /**
+   * @desc Получить название песни для плейлиста из общих данных о ней
+   */
   getSongName = ({ artist, name, fullname}: INewTrack): string  => {
     return (artist && name)
     ? this.getBeautySongString(artist, name)
     : this.getSongWithoutFormat(fullname)
   }
 
+  /**
+   * @desc Получить из полного названия песни все, кроме формата.
+   * Например: Alfi_Goggy-start.mp3 -> Alfi_Goggy-start
+   */
   getSongWithoutFormat = (songName: string): string => {
     return songName.slice(0, songName.indexOf('.'))
   }
 
+  /**
+   * @desc Делает из исполнителя и названия более красивую строку. Например: Prodigy - God
+   */
   getBeautySongString = (artist: string, name: string): string  => {
     return artist + ' - ' + name
   }
@@ -354,12 +406,18 @@ export class Player extends React.Component<IProps, IState> {
     return localMusic[0]
   }
 
+  /**
+   * @desc Составляет путь к файлу, чтобы браузер мог его получить в виде статики
+   */
   createFullPathToSong = (songName: string = ''): string => {
     if (!songName || typeof this.meta.path !== 'string') return ''
 
     return this.meta.path + songName
   }
 
+  /**
+   * @desc Добавить к песням в плейлисте их длительность
+   */
   addDurationToLocalMusic = (newMusic: Array<INewTrack>): void => {
     Promise
       .all(
@@ -378,6 +436,9 @@ export class Player extends React.Component<IProps, IState> {
       })
   }
 
+  /**
+   * @desc Получаем длительность песни на основе его метаданных
+   */
   getSongDuration(songName: string = ''): Promise<number> {
     const path: string = this.createFullPathToSong(songName)
 
@@ -391,6 +452,9 @@ export class Player extends React.Component<IProps, IState> {
     })
   }
 
+  /**
+   * @desc Форматирает время в секундах в более человеческий вид. Например: 123 -> 02:03
+   */
   formatSongTime = (time: number): string => {
     const separator: string = ':'
     const minutes: number = Math.floor(time / 60)

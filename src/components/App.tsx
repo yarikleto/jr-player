@@ -25,12 +25,15 @@ export class AppComponent extends React.PureComponent<IProps, any> {
     )
   }
 
+  // LIFE CYCLE METHODS
+
   componentDidMount() {
     const { socket } = this.props
     socket.on(NEW_MUSIC, this.handleServerHasNewMusic)
     socket.on(SEND_MUSIC, this.handleServerSendMusic)
   }
 
+  // HANDLE METHODS
   handleServerHasNewMusic = () => {
     const { socket } = this.props
     socket.emit(GET_MUSIC)

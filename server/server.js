@@ -1,10 +1,11 @@
-const app = new (require('koa'))(),
-      server = require('http').createServer(app.callback()),
-      io = require('socket.io')(server),
-      { handleServerIsStarted } = require('./helpers'),
-      serverIO = new (require('./ServerIO'))(io)
+const app = new (require('koa'))()
+const server = require('http').createServer(app.callback())
+const io = require('socket.io')(server)
+const { handleServerIsStarted } = require('./helpers')
+const CONFIG = require('./config')
+const serverIO = new (require('./ServerIO'))(io)
 
-server.listen(9100, handleServerIsStarted)
+server.listen(CONFIG.port, handleServerIsStarted)
 
 
 

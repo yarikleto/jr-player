@@ -30,6 +30,9 @@ module.exports = class ServerIO {
     this.socket.on(GET_MUSIC, this.handleGetMusic)
   }
 
+  /**
+   * @desc Когда клиент просит список песен, то эта функция отправляет песни в нужном виде
+   */
   async handleGetMusic() {
     const formatedMusic = await this.formatMusicNames(this.currentMusicNames)
     this.socket.emit(SEND_MUSIC, formatedMusic)
@@ -41,6 +44,7 @@ module.exports = class ServerIO {
   }
 
   /**
+  * @desc Запускает слежку за папкой с музыкой
   * @param { number } interval in ms. Default value equals 5s
   * @return { number } Returns interval id
   */
@@ -48,6 +52,9 @@ module.exports = class ServerIO {
     return setInterval(this.checkOnChangeMusicFolder, interval)
   }
 
+  /**
+   * @desc Сравнивает новые данные папки с музыкой, если есть различия - сказать клиенту об этом
+   */
   async checkOnChangeMusicFolder() {
     const newMusicNames = await getFileNamesInDir(CONFIG.paths.musicFullPath)
     if (isEqualArrays(newMusicNames, this.currentMusicNames) === false) {
@@ -57,7 +64,7 @@ module.exports = class ServerIO {
   }
 
   /**
-   * Emit action to SocketIO
+   * @desc Emit action to SocketIO
    * @param { string } action
    * @param { any } payload
    */
@@ -66,6 +73,7 @@ module.exports = class ServerIO {
   }
   
   /**
+   * @desc Приводит названия песен в обьекты с метаданными и отдает
    * @param { Array<string> } musicNames
    * @return { Array<Object> }
    */

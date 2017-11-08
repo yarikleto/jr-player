@@ -1,4 +1,5 @@
 /**
+ * @desc Сравнивает на равенство два массива
  * @param { Array<string> } firstArray
  * @param { Array<string> } secondArray
  * @return { boolean }
