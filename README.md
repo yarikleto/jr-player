@@ -1,4 +1,6 @@
-# SPA-started
+# JR-Player
+![JR-PLAYER](https://image.ibb.co/m8ccfw/bg.jpg)
+
 **Stack:** Webpack, React, Typescript, SASS
 
 - На данный момент работает только `development` сборка
