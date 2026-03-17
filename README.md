@@ -3,9 +3,9 @@
 
 **Stack:** Webpack, React, Typescript, SASS, NodeJS
 
-- На данный момент работает только `development` сборка
-- За папкой `music` идет постоянная слежка. При добавлении новой музыки автоматически обновляется плейлист
-- Музыка в папку `music` добавлена для быстрого примера
+- Currently, only the `development` build works.
+- The music folder is constantly monitored. When new music is added, the playlist is automatically updated.
+- Music has been added to the music folder for quick reference.
 
 
 Node - `v8.1.4`
@@ -26,6 +26,6 @@ npm run dev
 And connect to `localhost:9000` (client)
 
 TODO:
-- Сделать production-сборку
-- Разделить на более мелкие компоненты
-- Некоторые функции поделить на более мелкие для декларативности
+- Create a production build
+- Split it into smaller components
+- Split some functions into smaller ones for declarative purposes
