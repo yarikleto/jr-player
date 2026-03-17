@@ -20,7 +20,7 @@
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
     "socket.io-client": "^2.0.4",
-    "webpack": "3.7.1"
+    "webpack": "5.94.0"
   },
   "devDependencies": {
     "awesome-typescript-loader": "3.2.3",
